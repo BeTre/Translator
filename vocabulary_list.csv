@@ -1,6 +1,264 @@
-#German,Swedish,Learned
-auf,på,0
-für,för,1
-ein Museum,ett museum,1
-das Museum,museet,1
-deine Mudda,din mamma,0
+German,Swedish,Learned,category,id
+Hallo,Hej,0,10,1
+Hi,Tjena,0,10,2
+Guten Morgen.,God morgon.,1,10,3
+Gute Nacht.,God natt.,1,10,4
+Tschüss,Hej då,0,10,5
+Auf Wiedersehen.,Adjö.,0,10,6
+Guten Tag.,Goddag.,0,10,7
+ein Gespräch,ett samtal,0,3,8
+in,i,0,10,9
+ein Junge,en pojke,0,3,10
+ein Mann,en man,0,3,11
+Wie...?,Vad...?,0,10,12
+du,du,0,8,13
+ich,jag,0,8,14
+und,och,0,10,15
+ach so,jaså,0,10,16
+kommst du,kommer du,0,2,17
+von,från,0,10,18
+Woher...?,Varifrån...?,0,10,19
+ich bin,jag är,0,2,20
+auch,också,0,10,21
+wir,vi,0,8,22
+wir fischen,vi fiskar,0,2,23
+er,han,0,8,24
+sie,hon,0,8,25
+ihr,ni,0,8,26
+sie,de (pronounce: dom),0,8,27
+Nett, Sie kennenzulernen,Trevligt att träffas.,0,10,28
+eins,ett,0,11,29
+zwei,två,0,11,30
+ihr seid,ni är,0,2,31
+nicht,inte,0,10,32
+Schweden,Sverige,0,22,33
+Armenien,Armenien,0,10,34
+hier,här,0,10,35
+es,det,0,8,36
+Deutschland,Tyskland,0,22,38
+Was ist das?,Vad är det?,0,10,39
+eine Tafel,en tavla,0,3,40
+ein Wörterbuch,en ordbok,0,3,41
+ein Stift,en penna,0,3,42
+ein Lehrbuch,en lärobok,0,3,43
+ein Übungsbuch,en övningsbok,0,3,44
+ein Handy,en mobil (telefon),0,3,45
+eine Tasche,en väska,0,3,46
+ein CD-Spieler,en cd-spelare,0,3,47
+ein Block,ett block,0,3,48
+ein Blatt Papier,ett papper,0,3,49
+ein Radiergummi,ett suddgummi,0,3,50
+Wo liegt Malmö?,Var ligger Malmö?,0,10,51
+Malmö liegt im Feld Ö-3,Malmö ligger i ruta Ö-3,0,10,52
+Wo...?,Var...?,0,10,53
+liegen,ligger,0,2,54
+ein Feld,en ruta,0,3,55
+auf,på,0,14,56
+ein/der Flughafen,en flygplats /-en,0,15,57
+ein/der Mitarbeiter in der Abfertigung,en trafikassistent / -en,0,15,58
+er checkt ein,han checkar in,0,16,59
+Wie bitte?,Förlåt?,0,14,60
+Wie...?,Hur...?,0,14,61
+war,var,0,16,62
+ein/der Nachname,ett efternamn / -et,0,15,63
+Wie buchstabiert man ...?,Hur stavar man ...?,0,14,64
+ein/der Vorname,ett förnamn / -et,0,15,65
+danke,tack,0,14,66
+bitte,varsågod,0,14,67
+eine/die Bordkarte,ett boardingkort / -et,0,15,68
+ein/der Ausgang,en utgång / -en,0,15,69
+zwölf,tolv,0,11,70
+ein/der Name,ett namn / -et,0,15,71
+ein/das Hotel,ett hotell / -et,0,15,72
+ein/der Golfplatz,en golfbana / -n,0,15,73
+eine/die Jugendherberge,ett vandrarhem / -met,0,15,74
+eine/die Kirche,en kyrka / -n,0,15,75
+ein/das Café,ett kafé / -et,0,15,76
+eine/die Badestelle,en badplats / -en,0,15,77
+ein/der Angelplatz,en fiskeplats / -en,0,15,78
+ein/der Campingplatz,en campingplats / -en,0,15,79
+ein/das Museum,ett museum / museet,0,15,80
+ein/das Restaurant,en restaurang / -en,0,15,81
+eine/die Tankstelle,en bensinstation / -en,0,15,82
+ein/das Tourismusbüro,en turistbyrå / -n,0,15,83
+Wie weit ist es bis zu...?,Hur långt är det till ...?,0,14,84
+Es sind zwei Kilometer,Det är två kilometer,0,14,85
+ein/der Rezeptionist,en receptionist / -en,0,15,86
+Gibt es ...?,Finns det ...?,0,14,87
+in der Nähe,i närheten,0,14,88
+wir haben,vi har,0,16,89
+aber,men,0,14,90
+gut,bra,0,17,91
+dort,där,0,14,92
+leider,tyvärr,0,14,93
+ich empfehle,jag rekommenderar,0,16,94
+ein/der Strand,en strand / -en,0,15,95
+ach so,jaha,0,14,96
+es/das klingt,det låter,0,16,97
+eine/die Karte,en karta / -n,0,15,98
+selbstverständlich,javisst,0,14,99
+eine/die Broschüre,en broschyr / -en,0,15,100
+über,över,0,14,101
+eine/die Kommune,en kommun / -en,0,15,102
+weit,långt,0,14,103
+nach / zu,till,0,14,104
+eine/die (schwedische) Meile,en mil / -en,0,15,105
+mit,med,0,14,106
+ein/das Auto,en bil / -en,0,15,107
+wir wandern,vi vandrar,0,16,108
+Wie lustig/nett/schön!,Vad kul!,0,14,109
+Geht ein ...?,Går det en ...?,0,14,110
+ein/der Bus,en buss / -en,0,15,111
+eine/die Linie,en linje / -n,0,15,112
+eine/die Bushaltestelle,en busshållplats / -en,0,15,113
+eine/die Haltestelle,en hållplats / -en,0,15,114
+an / am,vid,0,14,115
+für,för,0,14,116
+eine/die Information,en information / -en,0,15,117
+Schönen Urlaub!,Trevlig semester!,0,14,118
+nett / schön,trevlig,0,17,119
+das ist,det är,0,2,120
+ein/der Urlaub,en semester / -n,0,15,121
+ein/das Telefongespräch,ett telefonsamtal / -et,0,18,122
+ein/das Telefon,en telefon / -en,0,18,123
+arbeiten,jobba / jobba / -r,0,19,124
+bei / in,på,0,21,125
+eine/die Computerfirma,ett IT-företag / -et,0,18,126
+ein/der Kilometer,en kilometer / -n,0,15,127
+besuchen,besök / besöka / -er,0,19,128
+eine/die Messe,en mässa / -n,0,18,129
+kommen,komm / komma / -er,0,19,130
+gerade / genau,precis,0,21,131
+ein/das Treffen,ett möte / -t,0,18,132
+zuerst,först,0,21,133
+kaufen,köp / köpa / -er,0,19,134
+eine/die Zeitung ,en tidning / -en,0,18,135
+dann / danach,sedan,0,21,136
+herausholen,ta / ta / -r   fram,0,19,137
+nehmen,ta / ta / -r,0,19,138
+anrufen,ring / ringa / -er,0,19,139
+ein/der Geschäftsfreund,en affärsvän / -nen,0,18,140
+eine/die Telefonnummer,ett telefonnummer / telefonnumret,0,18,141
+sein,vara / vara / är,0,19,142
+eine/die Ehefrau,en fru / -n,0,18,143
+antworten,svara / svara / -r,0,19,144
+zu Hause,hemma,0,21,145
+ein/der Augenblick,ett ögonblick / -et,0,18,146
+Wer...?,Vem...?,0,21,147
+wissen,veta / veta / vet,0,19,148
+jemand,någon,0,21,149
+Das ist lange her.,Det är längesedan.,0,21,150
+Wie gehts?,Hur är det?,0,21,151
+Mir geht es gut.,Jag mår bra.,0,21,152
+sich fühlen,må / må / -r,0,19,153
+Und selbst?,Och själv då?,0,21,154
+selbst,själv,0,21,155
+da / dann,då,0,21,156
+Danke; sehr gut,Tack; bara bra,0,21,157
+nur,bara,0,21,158
+eine/die Lust,en lust / -en,0,18,159
+zu,att,0,21,160
+eine/die Tasse,en kopp / -en,0,18,161
+ein/der Kaffee,ett kaffe / -t,0,18,162
+gerne,gärna,0,21,163
+eine/die Adresse,en adress / -en,0,18,164
+wohnen,bo / bo / -r,0,19,165
+von,av,0,21,166
+groß,stor,0,20,167
+ein/der Marktplatz,ett torg / -et,0,18,168
+gut / fein,fint,0,20,169
+gleich / bald,om en stund,0,21,170
+eine/die Weile,en stund / -en,0,18,171
+Bis nachher!,Hej så länge!,0,21,172
+so,så,0,21,173
+lange,länge,0,21,174
+Tschüss!,Hej; hej!,0,21,175
+Wie geht es dir?,Hur mår du?,0,21,176
+Wie stehts?,Hur står det till?,0,21,177
+stehen,stå / stå / -r,0,19,178
+Wie ist die Lage?,Hur är läget?,0,21,179
+recht gut,ganska bra,0,21,180
+in Ordnung,ok,0,21,181
+ja/ doch,jo,0,21,182
+geht so,så där,0,21,183
+nicht besonders,inget vidare,0,21,184
+Was hat ... für eine Vorwahl?,Vad har ... för riktnummer?,0,21,185
+eine/die Vorwahl,ett riktnummer / riktnumret,0,18,186
+eine/die E-Mail-Adresse,en mejladress / -en,0,18,187
+sprechen,tala / tala / -r,0,19,188
+machen,göra / göra / gör,0,19,189
+fischen,fiska / fiska / -r,0,19,190
+essen,ät / äta / -er,0,19,191
+eine/die Pizza,en pizza / -n,0,18,192
+wandern,vandra / vandra / -r,0,19,193
+trinken,drick / dricka / -er,0,19,194
+spielen,spela / spela / -r,0,19,195
+ein/das Golf,en golf / -en,0,18,196
+schreiben,skriv / skriva / -er,0,19,197
+tanken,tanka / tanka / tankar,0,19,198
+fliegen,flyg / flyga / flyger,0,19,199
+ein/das Land,ett land / landet,0,18,200
+eine/die Sprache,ett språk / -et,0,18,201
+Dänemark,Danmark,0,22,202
+Dänisch,danska / -n,0,22,203
+England,England,0,22,204
+Englisch,engelska /-n,0,22,205
+Finnland,Finland,0,22,206
+Finnisch,finska / -n,0,22,207
+Frankreich,Frankrike,0,22,208
+Französisch,franska / -n,0,22,209
+Holland,Holland,0,22,210
+Holländisch,holländska / -n,0,22,211
+Italien,Italien,0,22,212
+Italienisch,italienska / -n,0,22,213
+Norwegen,Norge,0,22,214
+Norwegisch,norska / -n,0,22,215
+Spanien,Spanien,0,22,216
+Spanisch,spanska / -n,0,22,217
+Schwedisch,svenska / -n,0,22,218
+Deutsch,tyska / -n,0,22,219
+erzählen,berätta / berätta / -r,0,19,220
+heißen,het / heta / heter,0,19,221
+ein/das Jahr,ett år / -et,0,18,222
+alt,gammal,0,20,224
+arbeiten,arbeta / arbeta / -r,0,19,225
+ein/das Institut,ett institut / -et,0,18,226
+verheiratet,gift,0,20,227
+eine/die Kunst,en konst / -en,0,18,228
+eine/die Musik,en musik / -en,0,18,229
+ein/das Theater,en teater / -n,0,18,230
+ein/der Sohn,en son / -en,0,18,231
+eine/die Tochter,en dotter / -n,0,18,232
+zur Schule gehen,går i skolan,0,21,233
+gehen,gå / gå / -r,0,19,234
+eine/die Schule,en skola / -n,0,18,235
+eine/die Tagesstätte,ett dagis / -et,0,18,236
+jeden,varje,0,21,237
+ein/der Tag,en dag / -en,0,18,238
+eine/die Katze,en katt / -en,0,18,239
+eine/die Dreizimmerwohnung,en trerumslägenhet / -en,0,18,240
+eine/die Wohnung,en lägenhet / -en,0,18,241
+ein/das Zentrum,ett centrum / -et,0,18,242
+eine/die Tagesstätte,ett daghem / -met,0,18,243
+ein/das Sommerhaus,en sommarstuga / -n,0,18,244
+eine/die Hütte / ein/das Häuschen,en stuga / -n,0,18,245
+fahren,åk / åka / -er,0,19,246
+(das) Wohnen,(ett ?) boende / -t,0,18,247
+ein/das Dorf,en by / -n,0,18,248
+auf dem Lande,på landet,0,21,249
+ein/das Haus,ett hus / -et,0,18,250
+ein/das Reihenhaus,ett radhus / -et,0,18,251
+ein/das Einfamilienhaus,en villa / -n,0,18,252
+eine/die Großstadt,en storstad / -en,0,18,253
+eine/die Stadt,en stad / -en,0,18,254
+ein/das Interview,en intervju / -n,0,18,255
+ein/das Alter,en ålder / -n,0,2,256
+ein/der Familienstand,ett civilstånd / -et,0,18,257
+Sprachkenntnisse,språkkunskaper,0,18,258
+ein/der Lebensgefährte,en sambo / -n,0,18,259
+verlobt,förlovad,0,20,260
+geschieden,skild,0,20,261
+eine/die Witwe,en änka / -n,0,18,262
+ein/der Witwer,en änkling / -en,0,18,263
+unverheiratet,ogift,0,20,264
+alleinstehend,ensamstående,0,20,265

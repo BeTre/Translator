@@ -23,9 +23,9 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
-FILE_NAME_0=3748;Conf;0;16;1;1;0;%2Fhome%2Fben%2F.bashrc;0;4
-FILE_NAME_1=671;Python;0;16;1;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Fserver.py;0;4
+current_page=0
+FILE_NAME_0=1707;Python;0;16;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Fserver.py;0;4
+FILE_NAME_1=69;None;0;16;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Fvocabulary_list.csv;0;4
 
 [VTE]
 last_dir=/home/ben
