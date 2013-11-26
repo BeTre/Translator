@@ -34,6 +34,17 @@ def readin_csv(input_file):
         return voclist
 
 
+def readout_csv(voclist, output_file):
+    '''read out unicode list 'voclist' in utf-8 csv file'''
+    with open(output_file, 'w') as csvfile:
+        readout = csv.writer(csvfile, delimiter=csv_delimiter, quotechar=csv_quotechar)
+        for line in voclist:
+            line_encoded = []
+            for element in line:
+                line_encoded.append(element.encode('utf-8'))
+            readout.writerow(line_encoded)
+
+
 @app.route('/')
 def index():
     voclist = readin_csv(input_file)
@@ -46,24 +57,28 @@ def learn(learn_id):
 
     if 'vocabulary' in request.args:
         vocabulary = request.args['vocabulary']
+        last_answer = vocabulary
         if vocabulary == voclist[learn_id][1]:
             voclist[learn_id][2] = '1'
             correct = True
         else:
             voclist[learn_id][2] = '0'
             correct = voclist[learn_id][1]
-        with open(output_file, 'w') as csvfile:
-            readout = csv.writer(csvfile, delimiter=csv_delimiter, quotechar=csv_quotechar)
-            for line in voclist:
-                line2 = []
-                for element in line:
-                    line2.append(element.encode('utf-8'))
-                readout.writerow(line2)
+        readout_csv(voclist, output_file)
     else:
         correct = 'start'
+        last_answer = []
 
+    if 'Mark as learned' in request.args:
+        voclist[learn_id][2] = '1'
+        readout_csv(voclist, output_file)
 
-    return render_template('learn.html', voc_to_translate = voclist[learn_id][0], learn_id = learn_id, correct = correct)
+    next_unlearned = learn_id+1
+    while voclist[next_unlearned][2] == '1':
+        next_unlearned += 1
+
+    return render_template('learn.html', voc_to_translate = voclist[learn_id][0], learn_id = learn_id,
+                           last_answer = last_answer, correct = correct, next_unlearned = next_unlearned)
 
 
 if __name__ == '__main__':
