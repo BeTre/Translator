@@ -1,8 +1,8 @@
 German,Swedish,Learned,category,id
 Hallo,Hej,0,10,1
 Hi,Tjena,0,10,2
-Guten Morgen.,God morgon.,1,10,3
-Gute Nacht.,God natt.,1,10,4
+Guten Morgen.,God morgon.,0,10,3
+Gute Nacht.,God natt.,0,10,4
 Tschüss,Hej då,0,10,5
 Auf Wiedersehen.,Adjö.,0,10,6
 Guten Tag.,Goddag.,0,10,7
@@ -26,7 +26,7 @@ er,han,0,8,24
 sie,hon,0,8,25
 ihr,ni,0,8,26
 sie,de (pronounce: dom),0,8,27
-Nett, Sie kennenzulernen,Trevligt att träffas.,0,10,28
+"Nett, Sie kennenzulernen",Trevligt att träffas.,0,10,28
 eins,ett,0,11,29
 zwei,två,0,11,30
 ihr seid,ni är,0,2,31
@@ -148,7 +148,7 @@ Wer...?,Vem...?,0,21,147
 wissen,veta / veta / vet,0,19,148
 jemand,någon,0,21,149
 Das ist lange her.,Det är längesedan.,0,21,150
-Wie gehts?,Hur är det?,0,21,151
+"Wie geht""s?",Hur är det?,0,21,151
 Mir geht es gut.,Jag mår bra.,0,21,152
 sich fühlen,må / må / -r,0,19,153
 Und selbst?,Och själv då?,0,21,154
@@ -174,7 +174,7 @@ so,så,0,21,173
 lange,länge,0,21,174
 Tschüss!,Hej; hej!,0,21,175
 Wie geht es dir?,Hur mår du?,0,21,176
-Wie stehts?,Hur står det till?,0,21,177
+"Wie steht""s?",Hur står det till?,0,21,177
 stehen,stå / stå / -r,0,19,178
 Wie ist die Lage?,Hur är läget?,0,21,179
 recht gut,ganska bra,0,21,180
