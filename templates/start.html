@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start adding words</title>
+</head>
+<body>
+    <h3>Choose Languages</h3>
+        <form name="choose_languages" action="/add" method="POST">
+        from: <select name="ltt" size="1">
+        {% for element in languages%}
+            <option> {{ element }} </option>
+        {% endfor %}
+        </select> <br />
+        to: <select name="ltl" size="1">
+        {% for element in languages%}
+            <option> {{ element }} </option>
+        {% endfor %}
+        </select> <br />
+        Lecture: <select name="lecture" size="1">
+        {% for element in lectures%}
+            <option> {{ element }} </option>
+        {% endfor %}
+        </select> <br />
+        <input type="submit" value="Submit">
+        </form>
+    <br />
+</body>
+</html>

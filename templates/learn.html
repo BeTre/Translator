@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning</title>
+</head>
+<body>
+    <h3>Vokabeltraining</h3>
+
+    Translate:  {{ voc_to_translate }}
+        <form name="input" action="/learn/{{ learn_id }}" method="get">
+            Translation:
+            <input type="text" name="vocabulary">
+                        Translation2:
+            <input type="text" name="vocabulary2">
+
+            <input type="submit" value="Submit">
+        </form>
+    <br />
+
+    {% if correct == True %}
+        Last answer: {{ last_answer }} <br />
+        Korrekt!
+    {% elif correct == 'start' %}
+    {% else %}
+        Last answer: {{ last_answer }} <br />
+        Correct answer: {{ correct }}
+    {% endif %}
+    <br />
+    <a href="/learn/{{ next_unlearned }}">next unlearned word  </a>
+    <a href="/learn/{{ learn_id+1 }}">next word</a>
+    <br />
+    <form>
+        <input type="submit" name="Mark as learned" value="Mark as learned"><br>
+    </form>
+
+
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vocabulary List</title>
+</head>
+<body>
+    <h3>Vocabulary List</h3>
+    <table border='1'>
+    {% for item in voclist %}
+        <tr>
+        {% for word in item %}
+            <td>{{ word }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+
+    </table>
+</body>
+</html>
