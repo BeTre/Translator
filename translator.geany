@@ -23,13 +23,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=5
-FILE_NAME_0=120;None;0;16;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Fvocabulary_list.csv;0;4
-FILE_NAME_1=1626;Python;0;16;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Fserver.py;0;4
-FILE_NAME_2=200;Python;0;16;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Ftest.py;0;4
-FILE_NAME_3=75;None;0;16;0;1;0;%2Fhome%2Fben%2Fdev%2Ftodo;0;4
-FILE_NAME_4=3703;Conf;0;16;0;1;0;%2Fhome%2Fben%2F.bashrc;0;4
-FILE_NAME_5=27;HTML;0;16;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Ftemplates%2Flearn.html;0;4
+current_page=1
+FILE_NAME_0=7954;Python;0;EUTF-8;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Fserver.py;0;4
+FILE_NAME_1=609;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Ftemplates%2Fadd_voc.html;0;4
+FILE_NAME_2=418;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Ftemplates%2Fadd.html;0;4
+FILE_NAME_3=289;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Ftemplates%2Flist.html;0;4
+FILE_NAME_4=3303;SQL;0;EUTF-8;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Fdb_scheme.sql;0;4
+FILE_NAME_5=194;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fben%2Fdev%2FTranslator%2Ftemplates%2Fstart.html;0;4
+FILE_NAME_6=359;HTML;0;EUTF-8;0;1;0;%2Fhome%2Fben%2FDesktop%2Ftmp.html;0;4
 
 [VTE]
 last_dir=/home/ben
