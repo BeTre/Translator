@@ -8,10 +8,10 @@
     Choose Type: <br />
     {% for type in word_types %}
         <form name="hidden" action="/add/{{ type }}" method="POST">
-        <input type="hidden" name="ltt" value={{ ltt }}>
-        <input type="hidden" name="ltl" value={{ ltl }}>
-        <input type="hidden" name="lecture" value={{ lecture }}>
-        <input type="submit" value={{ word_types[type] }}>
+        <input type="hidden" name="ltt" value="{{ ltt }}">
+        <input type="hidden" name="ltl" value="{{ ltl }}">
+        <input type="hidden" name="lecture" value="{{ lecture }}">
+        <input type="submit" value="{{ word_types[type] }}">
         </form>
     {% endfor %}
     <br />

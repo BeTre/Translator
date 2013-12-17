@@ -11,7 +11,7 @@
             {{ ltt }} word: <input type="text" name="word_to_translate">
                             <select name="case_word_to_translate" size="1">
                             {% for case in word_cases_ordered %}
-                                <option value={{ case.1}}> {{ case.0 }} </option>
+                                <option value="{{ case.1}}"> {{ case.0 }} </option>
                             {% endfor %}
                             </select>
                             <input type="checkbox" name="ir_word_to_translate" value="1">irregular
@@ -23,9 +23,9 @@
                               <input type="checkbox" name="learned_case_{{ case.1 }}" value="1">add as learned<br />
             {% endfor %}
             <input type="submit" value="Submit">
-            <input type="hidden" name="ltt" value={{ ltt }}>
-            <input type="hidden" name="ltl" value={{ ltl }}>
-            <input type="hidden" name="lecture" value={{ lecture }}>
+            <input type="hidden" name="ltt" value="{{ ltt }}">
+            <input type="hidden" name="ltl" value="{{ ltl }}">
+            <input type="hidden" name="lecture" value="{{ lecture }}">
         </form>
     <br />
 </body>
