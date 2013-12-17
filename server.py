@@ -63,15 +63,7 @@ def fetch_word_cases(word_type_id):
     where
         wt.id = ?
     order by wc.case_order''', (word_type_id,))
-    #safe order?
     data = [[row[1], row[2]] for row in cur]
-    #order keys b
-    #data2 = []
-    #keys = data.keys()
-    #keys.sort()
-    #for key in keys:
-    #    data2.append(data[key])
-    #return data2
     return data
 
 
@@ -140,7 +132,6 @@ def learn(learn_id):
 @app.route('/start')
 def start():
     '''choose languages to translate'''
-    #to do: Dropdown boxes with available languages and lectures
     languages = fetch_languages()
     lectures = fetch_lectures()
     return render_template('start.html', languages=languages, lectures=lectures)
@@ -171,28 +162,15 @@ def add_word_to_db():
     data = request.form
     print data
     #get language_ids and translation order
-    #order safe?
-    #request via dict?
-    #hate syntax for fetch with one column
-    cur = g.db.execute('''select id, translation_order from languages where name =:lang_to_trans''',
-                       {'lang_to_trans': data['ltt']})
+    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (data['ltt'],))
     ltt_id, translation_order_ltt = cur.fetchone()
-    cur = g.db.execute('''select id, translation_order from languages where name =:lang_to_learn''',
-                       {'lang_to_learn': data['ltl']})
+    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (data['ltl'],))
     ltl_id, translation_order_ltl = cur.fetchone()
 
-    #get lecuture_id
+    #get lecture_id
     cur = g.db.execute('''select id from lectures where name =:lecture''',
                        {'lecture': data['lecture']})
-    lecture_id = cur.fetchone()[0]
-    print lecture_id, data['lecture']
-
-    keys = data.keys()
-    remaining_data = {}
-    #remove empty entries
-    for key in keys:
-        if data[key] != '':
-            remaining_data[key] = data[key]
+    (lecture_id, ) = cur.fetchone()
 
     #insert new groups
     cur = g.db.execute('''select max(id) from groups''')
@@ -208,12 +186,19 @@ def add_word_to_db():
         cur = g.db.execute('''INSERT into translations (group_lower_language_order_id,
                            group_higher_language_order_id) values (?,?)''', (next_group_id_ltl, next_group_id_ltt))
 
+    #remove empty entries
+    keys = data.keys()
+    remaining_data = {}
+    for key in keys:
+        if data[key] != '':
+            remaining_data[key] = data[key]
+
     #insert word to translate
     cur = g.db.execute('''INSERT into words
                        (name, group_id, irregular, language_id, lecture_id, word_case_id, learned)
                        values (?,?,?,?,?,?,?)''',
                        (remaining_data['word_to_translate'], next_group_id_ltt, remaining_data.get('ir_word_to_translate', 0),
-                        ltt_id, lecture_id, remaining_data['case_word_to_translate'], remaining_data['learned_word_to_translate']))
+                        ltt_id, lecture_id, remaining_data['case_word_to_translate'], remaining_data.get('learned_word_to_translate',0)))
     #remove word to translate from
     del remaining_data['case_word_to_translate']
 
@@ -225,7 +210,7 @@ def add_word_to_db():
                                (remaining_data[key], next_group_id_ltl, remaining_data.get('ir_'+key, 0),
                                 ltl_id, lecture_id, key[5:], remaining_data.get('learned_'+key, 0)))
     g.db.commit()
-    return 'done'
+    return 'word sucessfully added'
 
 
 if __name__ == '__main__':
