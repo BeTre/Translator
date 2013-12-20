@@ -28,17 +28,20 @@ CREATE TABLE lectures (
 CREATE TABLE languages (
   id                INTEGER PRIMARY KEY,
   name              INTEGER NOT NULL,
-  translation_order INTEGER NOT NULL --order may not be changed / translation table uses lower order
+  translation_order INTEGER NOT NULL
+    --doc for translation order: see table 'translations'
 );
 
 CREATE TABLE translations (
   id                INTEGER PRIMARY KEY,
-  group_lower_language_order_id    INTEGER NOT NULL,
-  group_higher_language_order_id   INTEGER NOT NULL
+  group_lower_translation_order_id    INTEGER NOT NULL,
+  group_higher_translation_order_id   INTEGER NOT NULL
+    --order may not be changed / group associations in this table shall always
+    --be stored with the lower translation order in the column "group_lower_translation_order_id"
 );
 
 CREATE TABLE words (
-  id                INTEGER PRIMARY KEY, --needed???
+  id                INTEGER PRIMARY KEY,
   name              TEXT NOT NULL,
   irregular         INTEGER,          --BOOL
   learned           INTEGER,          --BOOL
