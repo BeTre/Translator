@@ -37,7 +37,8 @@ CREATE TABLE translations (
   group_lower_translation_order_id    INTEGER NOT NULL,
   group_higher_translation_order_id   INTEGER NOT NULL
     --order may not be changed / group associations in this table shall always
-    --be stored with the lower translation order in the column "group_lower_translation_order_id"
+    --be stored with the lower translation order in the column
+    --"group_lower_translation_order_id"
 );
 
 CREATE TABLE words (
