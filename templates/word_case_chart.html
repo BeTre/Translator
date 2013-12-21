@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Word case chart</title>
+
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.highcharts.com/highcharts.src.js"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            $.getJSON('/word_case_chart_data', function(data) {
+                console.log(data);
+                $('#container').highcharts({
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Word cases'
+                    },
+                    plotOptions: {
+                        pie: {
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true
+                        }
+                    },
+                    xAxis: {
+                        type: "category"
+                    },
+                    series: [
+                    {
+                        index: 0,
+                        name: "Market share",
+                        data: data.chart_data
+                    }],
+                });
+            });
+        });
+
+
+
+    </script>
+</head>
+<body>
+    <h3>Word case chart</h3>
+        <div id="container" style="width:100%; height:400px;"></div>
+    <br />
+</body>
+</html>
