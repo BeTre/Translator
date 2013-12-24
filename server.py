@@ -100,8 +100,8 @@ def insert_groups():
     lower_group_id = cur.fetchone()[0]+1
     higher_group_id = lower_group_id+1
     cur = g.db.executemany('''INSERT into groups (id) values (?)''', [(lower_group_id,), (higher_group_id,)])
-    cur = g.db.execute('''INSERT into translations (group_lower_language_order_id,
-                       group_higher_language_order_id) values (?,?)''', (lower_group_id, higher_group_id))
+    cur = g.db.execute('''INSERT into translations (group_lower_translation_order_id,
+                       group_higher_translation_order_id) values (?,?)''', (lower_group_id, higher_group_id))
     return lower_group_id, higher_group_id
 
 def add_group_to_db(lang_from, lang_to, lecture, word_to_translate, translations):
