@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*
-#bootstrap
 from flask import Flask, request, render_template, g
 import csv
 import sqlite3
@@ -7,18 +6,18 @@ import sqlite3
 app = Flask(__name__)
 
 csv_delimiter = ','
-csv_quotechar = "\""
-input_file = 'vocabulary_list.csv'
-output_file = 'vocabulary_list.csv'
+csv_quotechar = '"'
+input_file_name = 'vocabulary_list.csv'
+output_file_name = 'vocabulary_list.csv'
 database = 'vocabulary.db'
 database_csv = ['csv/verb.csv', 'csv/noun.csv', 'csv/adjective.csv', 'csv/numbers.csv', 'csv/countries.csv', 'csv/no_type.csv']
 #Abbreviations: language to translate: ltt, language to learn: ltl
 
 
 ###CSV-functions###############################################################
-def readin_csv(input_file):
+def readin_csv(input_file_name):
     '''Read in utf-8 csv file and return unicode list.'''
-    with open(input_file, 'r') as csvfile:
+    with open(input_file_name) as csvfile:
         readin = csv.reader(csvfile, delimiter=csv_delimiter, quotechar=csv_quotechar)
         voclist = []
         for line in readin:
@@ -29,9 +28,9 @@ def readin_csv(input_file):
         return voclist
 
 
-def readout_csv(voclist, output_file):
+def readout_csv(voclist, output_file_name):
     '''Read out unicode list 'voclist' in utf-8 csv file.'''
-    with open(output_file, 'w') as csvfile:
+    with open(output_file_name, 'w') as csvfile:
         readout = csv.writer(csvfile, delimiter=csv_delimiter, quotechar=csv_quotechar)
         for line in voclist:
             line_encoded = []
@@ -57,14 +56,14 @@ def fetch_word_cases(word_type_id):
     '''Read out all word cases to specifiv word type.'''
     cur = g.db.execute('''
     select
-        wc.case_order, wc.name, wc.id
+        wc.name, wc.id
     from
         word_cases as wc
         join word_types as wt on wc.word_type_id = wt.id
     where
         wt.id = ?
     order by wc.case_order''', (word_type_id,))
-    data = [[row[1], row[2]] for row in cur]
+    data = [[row[0], row[1]] for row in cur]
     return data
 
 
@@ -147,7 +146,7 @@ def add_group_to_db(ltt, ltl, lecture, word_to_translate, translations):
 @app.route('/')
 def index():
     'list of vocabulary from csv file'
-    voclist = readin_csv(input_file)
+    voclist = readin_csv(input_file_name)
     return render_template('list.html', voclist=voclist)
 
 
@@ -166,7 +165,7 @@ def learn(learn_id):
         else:
             voclist[learn_id][2] = '0'
             correct = voclist[learn_id][1]
-        readout_csv(voclist, output_file)
+        readout_csv(voclist, output_file_name)
     else:
         correct = 'start'
         last_answer = []
@@ -174,7 +173,7 @@ def learn(learn_id):
     if 'Mark as learned' in request.args:
         voclist[learn_id][2] = '1'
         learn_id += 1
-        readout_csv(voclist, output_file)
+        readout_csv(voclist, output_file_name)
 
     next_unlearned = learn_id+1
     while voclist[next_unlearned][2] == '1':
