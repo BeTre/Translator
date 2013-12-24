@@ -88,57 +88,60 @@ def fetch_lectures():
     return data
 
 
-def add_group_to_db(ltt, ltl, lecture, word_to_translate, translations):
-    '''needed keys: variable ltt: str(language to translate), e.g. 'German', needs to be in db
-                    variable ltl: str(language to learn), e.g. 'Swedish', needs to be in db
+def insert_word(group_id, language_id, lecture_id, name, case_id, learned=False, irregular=False):
+    g.db.execute('''INSERT into words
+                 (name, word_case_id, learned, irregular, group_id, language_id, lecture_id)
+                 values (?,?,?,?,?,?,?)''',
+                 (name, case_id, learned, irregular, group_id, language_id, lecture_id))
+                 #False = 0 in db?
+
+def insert_groups():
+    cur = g.db.execute('''select max(id) from groups''')
+    lower_group_id = cur.fetchone()[0]+1
+    higher_group_id = lower_group_id+1
+    cur = g.db.executemany('''INSERT into groups (id) values (?)''', [(lower_group_id,), (higher_group_id,)])
+    cur = g.db.execute('''INSERT into translations (group_lower_language_order_id,
+                       group_higher_language_order_id) values (?,?)''', (lower_group_id, higher_group_id))
+    return lower_group_id, higher_group_id
+
+def add_group_to_db(lang_from, lang_to, lecture, word_to_translate, translations):
+    '''needed keys: variable lang_from: str(language to translate), e.g. 'German', needs to be in db
+                    variable lang_to: str(language to learn), e.g. 'Swedish', needs to be in db
                     variable lecture: str(lecture), e.g. 'Book 1, Lecture 5', needs to be in db
                     dictionary word_to_translate'{name, case, learned (optional), irregular (optional)}
                         e.g. word_to_translate{name: 'laufen', case: '1', learned: '1', irregular: '0'}
                     dictionaries of cases of translations
-                        e.g. translations{case_1: {name: 'go', case: '1', learned: '1', irregular: '0'},
-                                          case_2: {name: 'went', case: '2', learned: '1', irregular: '1'},
-                                          case_3: {name: 'gone', case: '3', learned: '0', irregular: '1'}'''
+                        e.g. translations[{name: 'go', case: '1', learned: '1', irregular: '0'},
+                                          {name: 'went', case: '2', learned: '1', irregular: '1'},
+                                          {name: 'gone', case: '3', learned: '0', irregular: '1'}]'''
+
+    lower_group_id, higher_group_id = insert_groups()
+
     #get language_ids and translation order
-    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (ltt,))
-    ltt_id, translation_order_ltt = cur.fetchone()
-    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (ltl,))
-    ltl_id, translation_order_ltl = cur.fetchone()
+    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (lang_from,))
+    lang_from_id, translation_order_lang_from = cur.fetchone()
+    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (lang_to,))
+    lang_to_id, translation_order_lang_to = cur.fetchone()
 
     #get lecture_id
     cur = g.db.execute('''select id from lectures where name = ?''', (lecture, ))
     (lecture_id, ) = cur.fetchone()
 
-    #insert new groups
-    cur = g.db.execute('''select max(id) from groups''')
-    next_group_id_ltt = cur.fetchone()[0]+1
-    next_group_id_ltl = next_group_id_ltt+1
-    cur = g.db.executemany('''INSERT into groups (id) values (?)''', [(next_group_id_ltt,), (next_group_id_ltl,)])
 
-    #insert translation realtion between groups;
-    if translation_order_ltt < translation_order_ltl:
-        cur = g.db.execute('''INSERT into translations (group_lower_translation_order_id,
-                           group_higher_language_order_id) values (?,?)''', (next_group_id_ltt, next_group_id_ltl))
+    if translation_order_lang_from < translation_order_lang_to:
+        group_id_lang_from, group_id_lang_to = lower_group_id, higher_group_id
     else:
-        cur = g.db.execute('''INSERT into translations (group_lower_translation_order_id,
-                           group_higher_language_order_id) values (?,?)''', (next_group_id_ltl, next_group_id_ltt))
+        group_id_lang_from, group_id_lang_to = higher_group_id, lower_group_id
 
     #insert word to translate
-    cur = g.db.execute('''INSERT into words
-                       (name, word_case_id, learned, irregular, group_id, language_id, lecture_id)
-                       values (?,?,?,?,?,?,?)''',
-                       (word_to_translate['name'], word_to_translate['case'],
-                        word_to_translate.get('learned', 0), word_to_translate.get('irregular', 0),
-                        next_group_id_ltt, ltt_id, lecture_id))
+    insert_word(group_id_lang_from, lang_from_id, lecture_id, word_to_translate['name'], word_to_translate['case'],
+                word_to_translate.get('learned', False), word_to_translate.get('irregular', False))
 
     #insert translations
-    for key in translations:
-        cur = g.db.execute('''INSERT into words
-                           (name, word_case_id, learned, irregular, group_id, language_id, lecture_id)
-                           values (?,?,?,?,?,?,?)''',
-                           (translations[key]['name'], translations[key]['case'],
-                            translations[key].get('learned', 0), translations[key].get('irregular', 0),
-                            next_group_id_ltl, ltl_id, lecture_id))
-    #g.db.commit()
+    for trans in translations:
+        insert_word(group_id_lang_to, lang_to_id, lecture_id, trans['name'], trans['case'],
+                trans.get('learned', False), trans.get('irregular', False))
+    g.db.commit()
     return 'word %s sucessfully added' % (word_to_translate['name'])
 
 
@@ -153,7 +156,7 @@ def index():
 @app.route('/learn/<int:learn_id>', methods=['GET'])
 def learn(learn_id):
     'learning of vocabularies based on simple csv file'
-    voclist = readin_csv(input_file)
+    voclist = readin_csv(input_file_name)
 
     if 'vocabulary' in request.args:
         vocabulary = request.args['vocabulary']
@@ -223,15 +226,17 @@ def add_word_to_db():
                          'case': data['case_word_to_translate'],
                          'learned': data.get('learned_word_to_translate', 0),
                          'irregular': data.get('ir_word_to_translate', 0)}
+    translations = []
     for key in data:
         if key[:4] == 'case' and key != 'case_word_to_translate':
             print 'key in if:', key
-            translations = {key: {'name': data[key],
+            translations.append({'name': data[key],
                                   'case': key[5:],
                                   'learned': data.get('learned_'+key, 0),
-                                  'irregular': data.get('ir_'+key, 0)}}
+                                  'irregular': data.get('ir_'+key, 0)})
             print 'added', key, data[key]
     print word_to_translate, translations
+
     return add_group_to_db(ltt, ltl, lecture, word_to_translate, translations)
 
 
