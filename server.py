@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*
-from flask import Flask, request, render_template, g
+from flask import Flask, request, render_template, g, jsonify
 import csv
 import sqlite3
 
@@ -145,6 +145,22 @@ def add_group_to_db(lang_from, lang_to, lecture, word_to_translate, translations
     return 'word %s sucessfully added' % (word_to_translate['name'])
 
 
+def fetch_word_case_count():
+    """
+    Returns the number of words for each word case
+    dict(key=word_case_name, value=number_of_words)
+    """
+    cur = g.db.execute('''
+        select
+           wc.name, count(wc.id)
+        from
+            words w
+            join word_cases wc on w.word_case_id = wc.id
+        group by
+            wc.id''')
+    return {row[0]: row[1] for row in cur}
+
+
 ###CSV-sites###################################################################
 @app.route('/')
 def index():
@@ -246,6 +262,20 @@ def imports():
     'list of vocabulary from csv file'
     voclist = readin_csv(database_csv[0])
     return render_template('list.html', voclist=voclist)
+
+
+@app.route('/word_case_chart_data')
+def word_case_chart_data():
+    word_case_count = fetch_word_case_count()
+    l = []
+    for case in sorted(word_case_count):
+        l.append([case, word_case_count[case]])
+    return jsonify({'chart_data': l})
+
+@app.route('/word_case_chart')
+def word_case_chart():
+    return render_template('word_case_chart.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
