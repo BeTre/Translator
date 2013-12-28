@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*
-from flask import Flask, request, render_template, g, jsonify
 import csv
+
 import sqlite3
+from flask import Flask, request, render_template, g, jsonify
 
 app = Flask(__name__)
 
@@ -10,15 +11,18 @@ csv_quotechar = '"'
 input_file_name = 'vocabulary_list.csv'
 output_file_name = 'vocabulary_list.csv'
 database = 'vocabulary.db'
-database_csv = ['csv/verb.csv', 'csv/noun.csv', 'csv/adjective.csv', 'csv/numbers.csv', 'csv/countries.csv', 'csv/no_type.csv']
-#Abbreviations: language to translate: ltt, language to learn: ltl
+database_csv = [
+    'csv/verb.csv', 'csv/noun.csv', 'csv/adjective.csv',
+    'csv/numbers.csv', 'csv/countries.csv', 'csv/no_type.csv'
+    ]
 
 
-###CSV-functions###############################################################
-def readin_csv(input_file_name):
-    '''Read in utf-8 csv file and return unicode list.'''
+# CSV-functions#########################################################
+def read_csv(input_file_name):
+    """Read utf-8 csv file and return list of unicode strings"""
     with open(input_file_name) as csvfile:
-        readin = csv.reader(csvfile, delimiter=csv_delimiter, quotechar=csv_quotechar)
+        readin = csv.reader(csvfile, delimiter=csv_delimiter,
+                            quotechar=csv_quotechar)
         voclist = []
         for line in readin:
             line_decoded = []
@@ -28,10 +32,11 @@ def readin_csv(input_file_name):
         return voclist
 
 
-def readout_csv(voclist, output_file_name):
-    '''Read out unicode list 'voclist' in utf-8 csv file.'''
+def write_csv(voclist, output_file_name):
+    """Write unicode list 'voclist' in utf-8 csv file."""
     with open(output_file_name, 'w') as csvfile:
-        readout = csv.writer(csvfile, delimiter=csv_delimiter, quotechar=csv_quotechar)
+        readout = csv.writer(csvfile, delimiter=csv_delimiter,
+                             quotechar=csv_quotechar)
         for line in voclist:
             line_encoded = []
             for element in line:
@@ -39,7 +44,7 @@ def readout_csv(voclist, output_file_name):
             readout.writerow(line_encoded)
 
 
-###DB-functions################################################################
+# DB-functions##########################################################
 @app.before_request
 def before_request():
     g.db = sqlite3.connect(database)
@@ -53,7 +58,7 @@ def teardown_request(exception):
 
 
 def fetch_word_cases(word_type_id):
-    '''Read out all word cases to specifiv word type.'''
+    """Read out all word cases to specifiv word type."""
     cur = g.db.execute('''
     select
         wc.name, wc.id
@@ -68,43 +73,57 @@ def fetch_word_cases(word_type_id):
 
 
 def fetch_word_types():
-    '''Read out all word types.'''
+    """Read out all word types."""
     cur = g.db.execute('select wt.id, wt.name from word_types as wt')
     data = {row[0]: row[1] for row in cur}
     return data
 
 
 def fetch_languages():
-    '''Read out all languages.'''
+    """Read out all languages."""
     cur = g.db.execute('select name from languages')
     data = [row[0] for row in cur]
     return data
 
 
 def fetch_lectures():
-    '''Read out all languages.'''
+    """Read out all languages."""
     cur = g.db.execute('select name from lectures')
     data = [row[0] for row in cur]
     return data
 
 
-def insert_word(group_id, language_id, lecture_id, name, case_id, learned=False, irregular=False):
-    g.db.execute('''INSERT into words
-                 (name, word_case_id, learned, irregular, group_id, language_id, lecture_id)
+def insert_word(
+        group_id, language_id, lecture_id, name,
+        case_id, learned=False, irregular=False):
+    g.db.execute('''
+                 INSERT into words (
+                     name, word_case_id, learned, irregular,
+                     group_id, language_id, lecture_id
+                     )
                  values (?,?,?,?,?,?,?)''',
-                 (name, case_id, learned, irregular, group_id, language_id, lecture_id))
-                 #False = 0 in db?
+                 (name, case_id, learned, irregular,
+                  group_id, language_id, lecture_id))
+                 # False = 0 in db?
+
 
 def insert_groups():
-    cur = g.db.execute('''select max(id) from groups''')
+    cur = g.db.execute('select max(id) from groups')
     lower_group_id = cur.fetchone()[0]+1
     higher_group_id = lower_group_id+1
-    cur = g.db.executemany('''INSERT into groups (id) values (?)''', [(lower_group_id,), (higher_group_id,)])
-    cur = g.db.execute('''INSERT into translations (group_lower_translation_order_id,
-                       group_higher_translation_order_id) values (?,?)''', (lower_group_id, higher_group_id))
+    cur = g.db.executemany('INSERT into groups (id) values (?)',
+                           [(lower_group_id,), (higher_group_id,)])
+    cur = g.db.execute('''
+                       INSERT into translations
+                       (group_lower_translation_order_id,
+                        group_higher_translation_order_id)
+                       values (?,?)''',
+                       (lower_group_id, higher_group_id))
     return lower_group_id, higher_group_id
 
-def add_group_to_db(lang_from, lang_to, lecture, word_to_translate, translations):
+
+def add_group_to_db(
+        lang_from, lang_to, lecture, word_to_translate, translations):
     '''needed keys: variable lang_from: str(language to translate), e.g. 'German', needs to be in db
                     variable lang_to: str(language to learn), e.g. 'Swedish', needs to be in db
                     variable lecture: str(lecture), e.g. 'Book 1, Lecture 5', needs to be in db
@@ -117,30 +136,30 @@ def add_group_to_db(lang_from, lang_to, lecture, word_to_translate, translations
 
     lower_group_id, higher_group_id = insert_groups()
 
-    #get language_ids and translation order
-    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (lang_from,))
-    lang_from_id, translation_order_lang_from = cur.fetchone()
-    cur = g.db.execute('''select id, translation_order from languages where name = ?''', (lang_to,))
-    lang_to_id, translation_order_lang_to = cur.fetchone()
-
-    #get lecture_id
-    cur = g.db.execute('''select id from lectures where name = ?''', (lecture, ))
-    (lecture_id, ) = cur.fetchone()
-
+    ((lang_from_id, translation_order_lang_from),) = g.db.execute('''
+    select id, translation_order from languages where name = ?''', (lang_from, ))
+    ((lang_to_id, translation_order_lang_to),) = g.db.execute('''
+    select id, translation_order from languages where name = ?''', (lang_to, ))
+    ((lecture_id,),) = g.db.execute('''
+    select id from lectures where name = ?''', (lecture, ))
 
     if translation_order_lang_from < translation_order_lang_to:
         group_id_lang_from, group_id_lang_to = lower_group_id, higher_group_id
     else:
         group_id_lang_from, group_id_lang_to = higher_group_id, lower_group_id
 
-    #insert word to translate
-    insert_word(group_id_lang_from, lang_from_id, lecture_id, word_to_translate['name'], word_to_translate['case'],
-                word_to_translate.get('learned', False), word_to_translate.get('irregular', False))
+    # insert word to translate
+    insert_word(group_id_lang_from, lang_from_id, lecture_id,
+                word_to_translate['name'], word_to_translate['case'],
+                word_to_translate.get('learned', False),
+                word_to_translate.get('irregular', False))
 
-    #insert translations
+    # insert translations
     for trans in translations:
-        insert_word(group_id_lang_to, lang_to_id, lecture_id, trans['name'], trans['case'],
-                trans.get('learned', False), trans.get('irregular', False))
+        insert_word(group_id_lang_to, lang_to_id, lecture_id,
+                    trans['name'], trans['case'],
+                    trans.get('learned', False),
+                    trans.get('irregular', False))
     g.db.commit()
     return 'word %s sucessfully added' % (word_to_translate['name'])
 
@@ -149,6 +168,7 @@ def fetch_word_case_count():
     """
     Returns the number of words for each word case
     dict(key=word_case_name, value=number_of_words)
+
     """
     cur = g.db.execute('''
         select
@@ -161,18 +181,18 @@ def fetch_word_case_count():
     return {row[0]: row[1] for row in cur}
 
 
-###CSV-sites###################################################################
+# CSV-sites#############################################################
 @app.route('/')
 def index():
     'list of vocabulary from csv file'
-    voclist = readin_csv(input_file_name)
+    voclist = read_csv(input_file_name)
     return render_template('list.html', voclist=voclist)
 
 
 @app.route('/learn/<int:learn_id>', methods=['GET'])
 def learn(learn_id):
     'learning of vocabularies based on simple csv file'
-    voclist = readin_csv(input_file_name)
+    voclist = read_csv(input_file_name)
 
     if 'vocabulary' in request.args:
         vocabulary = request.args['vocabulary']
@@ -184,7 +204,7 @@ def learn(learn_id):
         else:
             voclist[learn_id][2] = '0'
             correct = voclist[learn_id][1]
-        readout_csv(voclist, output_file_name)
+        write_csv(voclist, output_file_name)
     else:
         correct = 'start'
         last_answer = []
@@ -192,51 +212,57 @@ def learn(learn_id):
     if 'Mark as learned' in request.args:
         voclist[learn_id][2] = '1'
         learn_id += 1
-        readout_csv(voclist, output_file_name)
+        write_csv(voclist, output_file_name)
 
     next_unlearned = learn_id+1
     while voclist[next_unlearned][2] == '1':
         next_unlearned += 1
 
-    return render_template('learn.html', voc_to_translate=voclist[learn_id][0], learn_id=learn_id,
-                           last_answer=last_answer, correct=correct, next_unlearned=next_unlearned)
+    return render_template('learn.html',
+                           voc_to_translate=voclist[learn_id][0],
+                           learn_id=learn_id,
+                           last_answer=last_answer, correct=correct,
+                           next_unlearned=next_unlearned)
 
 
-###DB-sites####################################################################
+###DB-sites#############################################################
 @app.route('/start')
 def start():
-    '''choose languages to translate'''
+    """choose languages to translate"""
     languages = fetch_languages()
     lectures = fetch_lectures()
-    return render_template('start.html', languages=languages, lectures=lectures)
+    return render_template('start.html',
+                           languages=languages, lectures=lectures)
 
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     data = request.form
-    ltt = data['ltt']
-    ltl = data['ltl']
+    lang_from = data['lang_from']
+    lang_to = data['lang_to']
     lecture = data['lecture']
     word_types = fetch_word_types()
     return render_template('add.html', word_types=word_types,
-                           ltt=ltt, ltl=ltl, lecture=lecture)
+                           lang_from=lang_from, lang_to=lang_to,
+                           lecture=lecture)
 
 
 @app.route('/add/<word_type_id>', methods=['GET', 'POST'])
 def add_word(word_type_id):
     data = request.form
-    print data
     word_cases_ordered = fetch_word_cases(word_type_id)
-    return render_template('add_voc.html', word_type_id=word_type_id, word_cases_ordered=word_cases_ordered,
-                           ltt=data['ltt'], ltl=data['ltl'], lecture=data['lecture'])
+    return render_template('add_voc.html', word_type_id=word_type_id,
+                           word_cases_ordered=word_cases_ordered,
+                           lang_from=data['lang_from'],
+                           lang_to=data['lang_to'], lecture=data['lecture'])
 
 
 @app.route('/add/new', methods=['GET', 'POST'])
 def add_word_to_db():
     data = request.form
     print data
-    ltt = data['ltt']
-    ltl = data['ltl']
+    lang_from = data['lang_from']
+    lang_to = data['lang_to']
     lecture = data['lecture']
     word_to_translate = {'name': data['word_to_translate'],
                          'case': data['case_word_to_translate'],
@@ -244,23 +270,21 @@ def add_word_to_db():
                          'irregular': data.get('ir_word_to_translate', 0)}
     translations = []
     for key in data:
-        if key[:4] == 'case' and key != 'case_word_to_translate':
-            print 'key in if:', key
+        if key.startswith('case') and key != 'case_word_to_translate':
             translations.append({'name': data[key],
-                                  'case': key[5:],
-                                  'learned': data.get('learned_'+key, 0),
-                                  'irregular': data.get('ir_'+key, 0)})
-            print 'added', key, data[key]
-    print word_to_translate, translations
+                                 'case': key[5:],
+                                 'learned': data.get('learned_'+key, 0),
+                                 'irregular': data.get('ir_'+key, 0)})
 
-    return add_group_to_db(ltt, ltl, lecture, word_to_translate, translations)
+    return add_group_to_db(lang_from, lang_to, lecture,
+                           word_to_translate, translations)
 
 
-#Readin_csv_to_db_part
+# read_csv_to_db_part
 @app.route('/import')
 def imports():
-    'list of vocabulary from csv file'
-    voclist = readin_csv(database_csv[0])
+    """list of vocabulary from csv file"""
+    voclist = read_csv(database_csv[0])
     return render_template('list.html', voclist=voclist)
 
 
@@ -271,6 +295,7 @@ def word_case_chart_data():
     for case in sorted(word_case_count):
         l.append([case, word_case_count[case]])
     return jsonify({'chart_data': l})
+
 
 @app.route('/word_case_chart')
 def word_case_chart():
