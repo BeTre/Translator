@@ -6,12 +6,12 @@
 <body>
     <h3>Choose Languages</h3>
         <form name="choose_languages" action="/add" method="POST">
-        from: <select name="ltt" size="1">
+        from: <select name="lang_from" size="1">
         {% for element in languages%}
             <option> {{ element }} </option>
         {% endfor %}
         </select> <br />
-        to: <select name="ltl" size="1">
+        to: <select name="lang_to" size="1">
         {% for element in languages%}
             <option> {{ element }} </option>
         {% endfor %}
