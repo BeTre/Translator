@@ -5,15 +5,16 @@
 </head>
 <body>
     <h3>Add words to lecture {{ lecture }}</h3>
-    Choose Type: <br />
+    Choose Type:
+    <br>
     {% for type in word_types %}
-        <form name="hidden" action="/add/{{ type }}" method="POST">
-        <input type="hidden" name="ltt" value="{{ ltt }}">
-        <input type="hidden" name="ltl" value="{{ ltl }}">
+    <form name="hidden" action="/add/{{ type }}" method="POST">
+        <input type="hidden" name="lang_from" value="{{ lang_from }}">
+        <input type="hidden" name="lang_to" value="{{ lang_to }}">
         <input type="hidden" name="lecture" value="{{ lecture }}">
         <input type="submit" value="{{ word_types[type] }}">
-        </form>
+    </form>
     {% endfor %}
-    <br />
+    <br>
 </body>
 </html>

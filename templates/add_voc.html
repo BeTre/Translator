@@ -5,28 +5,29 @@
 </head>
 <body>
     <h3>Add words</h3>
-
-    Add {{ltl}} Translation for {{ ltt }} word for lecture {{ lecture }}:<br />
-        <form name="input" action="/add/new" method="POST">
-            {{ ltt }} word: <input type="text" name="word_to_translate">
-                            <select name="case_word_to_translate" size="1">
-                            {% for case in word_cases_ordered %}
-                                <option value="{{ case.1}}"> {{ case.0 }} </option>
-                            {% endfor %}
-                            </select>
-                            <input type="checkbox" name="ir_word_to_translate" value="1">irregular
-                            <input type="checkbox" name="learned_word_to_translate" value="1">add as learned<br />
-            {{ ltl }} translations: <br />
+    Add {{lang_to}} Translation for {{ lang_from }} word for lecture {{ lecture }}:<br>
+    <form name="input" action="/add/new" method="POST">
+        {{ lang_from }} word:
+        <input type="text" name="word_to_translate">
+        <select name="case_word_to_translate" size="1">
             {% for case in word_cases_ordered %}
-                {{ case.0 }}: <input type="text" name="case_{{ case.1 }}">
-                              <input type="checkbox" name="ir_case_{{ case.1 }}" value="1">irregular
-                              <input type="checkbox" name="learned_case_{{ case.1 }}" value="1">add as learned<br />
+                <option value="{{ case.1}}"> {{ case.0 }} </option>
             {% endfor %}
-            <input type="submit" value="Submit">
-            <input type="hidden" name="ltt" value="{{ ltt }}">
-            <input type="hidden" name="ltl" value="{{ ltl }}">
-            <input type="hidden" name="lecture" value="{{ lecture }}">
-        </form>
-    <br />
+        </select>
+        <input type="checkbox" name="ir_word_to_translate" value="1">irregular
+        <input type="checkbox" name="learned_word_to_translate" value="1">add as learned<br>
+        {{ lang_to }} translations: <br>
+        {% for case in word_cases_ordered %}
+            {{ case.0 }}:
+            <input type="text" name="case_{{ case.1 }}">
+            <input type="checkbox" name="ir_case_{{ case.1 }}" value="1">irregular
+            <input type="checkbox" name="learned_case_{{ case.1 }}" value="1">add as learned<br>
+        {% endfor %}
+        <input type="submit" value="Submit">
+        <input type="hidden" name="lang_from" value="{{ lang_from }}">
+        <input type="hidden" name="lang_to" value="{{ lang_to }}">
+        <input type="hidden" name="lecture" value="{{ lecture }}">
+    </form>
+    <br>
 </body>
 </html>
