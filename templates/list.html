@@ -1,11 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Vocabulary List</title>
-</head>
-<body>
-    <h3>Vocabulary List</h3>
-    <table border="1">
+{% extends "base.html" %}
+
+{% block title %}Vocabulary List{% endblock %}
+
+{% block menu_list %}class="active"{% endblock %}
+
+{% block content %}
+    <h1>Vocabulary List</h1>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>German</th>
+                <th>Swedish</th>
+                <th>Learned</th>
+                <th>Category</th>
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for item in voclist %}
             <tr>
             {% for word in item %}
@@ -13,6 +24,6 @@
             {% endfor %}
             </tr>
         {% endfor %}
+        </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

@@ -182,8 +182,8 @@ def fetch_word_case_count():
 
 
 # CSV-sites#############################################################
-@app.route('/')
-def index():
+@app.route('/list')
+def list():
     'list of vocabulary from csv file'
     voclist = read_csv(input_file_name)
     return render_template('list.html', voclist=voclist)
@@ -300,6 +300,11 @@ def word_case_chart_data():
 @app.route('/word_case_chart')
 def word_case_chart():
     return render_template('word_case_chart.html')
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
