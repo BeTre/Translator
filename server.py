@@ -57,8 +57,8 @@ def teardown_request(exception):
         db.close()
 
 
-def fetch_word_cases(word_type_id):
-    """Read out all word cases to specifiv word type."""
+def fetch_word_cases_of_language(word_type_id, language_id):
+    """Read out all word cases to specifiv word type and language."""
     cur = g.db.execute('''
     select
         wc.name, wc.id
@@ -66,8 +66,11 @@ def fetch_word_cases(word_type_id):
         word_cases as wc
         join word_types as wt on wc.word_type_id = wt.id
     where
-        wt.id = ?
-    order by wc.case_order''', (word_type_id,))
+        wt.id = :word_type_id
+    and
+        wc.language_id = :language_id
+    order by wc.case_order''',
+    {'word_type_id' : word_type_id, 'language_id': language_id})
     data = [[row[0], row[1]] for row in cur]
     return data
 
@@ -250,9 +253,21 @@ def add():
 @app.route('/add/<word_type_id>', methods=['GET', 'POST'])
 def add_word(word_type_id):
     data = request.form
-    word_cases_ordered = fetch_word_cases(word_type_id)
+
+    ((lang_from_id,),) = g.db.execute('''
+    select id from languages where name = ?''', (data['lang_from'], ))
+    ((lang_to_id,),) = g.db.execute('''
+    select id from languages where name = ?''', (data['lang_to'], ))
+
+    word_cases_lang_from = fetch_word_cases_of_language(word_type_id,
+                                                        lang_from_id)
+    word_cases_lang_to = fetch_word_cases_of_language(word_type_id,
+                                                      lang_to_id)
+    print word_cases_lang_from
+    print word_cases_lang_to
     return render_template('add_voc.html', word_type_id=word_type_id,
-                           word_cases_ordered=word_cases_ordered,
+                           word_cases_lang_from=word_cases_lang_from,
+                           word_cases_lang_to=word_cases_lang_to,
                            lang_from=data['lang_from'],
                            lang_to=data['lang_to'], lecture=data['lecture'])
 

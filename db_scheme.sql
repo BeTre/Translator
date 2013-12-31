@@ -10,9 +10,12 @@ CREATE TABLE word_cases (
   id                INTEGER PRIMARY KEY,
   name              TEXT NOT NULL,
   word_type_id      INTEGER NOT NULL,
+  language_id       INTEGER NOT NULL,
   case_order        INTEGER NOT NULL,
   FOREIGN KEY(word_type_id) REFERENCES word_types(id),
-  UNIQUE(name, word_type_id)
+  FOREIGN KEY(language_id)  REFERENCES languages(id),
+  UNIQUE(name, word_type_id, language_id)
+  UNIQUE(word_type_id, language_id, case_order)
 );
 
 CREATE TABLE groups (

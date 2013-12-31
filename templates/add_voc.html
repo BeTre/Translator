@@ -10,14 +10,14 @@
         {{ lang_from }} word:
         <input type="text" name="word_to_translate">
         <select name="case_word_to_translate" size="1">
-            {% for case in word_cases_ordered %}
-                <option value="{{ case.1}}"> {{ case.0 }} </option>
+            {% for case in word_cases_lang_from %}
+                <option value="{{ case.1 }}"> {{ case.0 }} </option>
             {% endfor %}
         </select>
         <input type="checkbox" name="ir_word_to_translate" value="1">irregular
         <input type="checkbox" name="learned_word_to_translate" value="1">add as learned<br>
         {{ lang_to }} translations: <br>
-        {% for case in word_cases_ordered %}
+        {% for case in word_cases_lang_to %}
             {{ case.0 }}:
             <input type="text" name="case_{{ case.1 }}">
             <input type="checkbox" name="ir_case_{{ case.1 }}" value="1">irregular
