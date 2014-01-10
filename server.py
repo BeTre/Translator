@@ -159,10 +159,11 @@ def add_group_to_db(
 
     # insert translations
     for trans in translations:
-        insert_word(group_id_lang_to, lang_to_id, lecture_id,
-                    trans['name'], trans['case'],
-                    trans.get('learned', False),
-                    trans.get('irregular', False))
+        if trans['name'] != "":
+            insert_word(group_id_lang_to, lang_to_id, lecture_id,
+                        trans['name'], trans['case'],
+                        trans.get('learned', False),
+                        trans.get('irregular', False))
     g.db.commit()
     return 'word %s sucessfully added' % (word_to_translate['name'])
 
