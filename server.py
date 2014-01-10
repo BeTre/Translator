@@ -58,7 +58,11 @@ def teardown_request(exception):
 
 
 def fetch_word_cases_of_language(word_type_id, language_id):
-    """Read out all word cases to specifiv word type and language."""
+    """
+    Read out all word cases to specific word type and language,
+    ordered by case_order
+
+    """
     cur = g.db.execute('''
     select
         wc.name, wc.id
@@ -264,8 +268,6 @@ def add_word(word_type_id):
                                                         lang_from_id)
     word_cases_lang_to = fetch_word_cases_of_language(word_type_id,
                                                       lang_to_id)
-    print word_cases_lang_from
-    print word_cases_lang_to
     return render_template('add_voc.html', word_type_id=word_type_id,
                            word_cases_lang_from=word_cases_lang_from,
                            word_cases_lang_to=word_cases_lang_to,
@@ -276,7 +278,6 @@ def add_word(word_type_id):
 @app.route('/add/new', methods=['GET', 'POST'])
 def add_word_to_db():
     data = request.form
-    print data
     lang_from = data['lang_from']
     lang_to = data['lang_to']
     lecture = data['lecture']
