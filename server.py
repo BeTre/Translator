@@ -200,6 +200,67 @@ def fetch_word_case_count():
     return {row[0]: row[1] for row in cur}
 
 
+def add_csv_to_db(input_file_name, lang_from, lang_to, word_type_id):
+    """Read utf-8 csv file in db"""
+    ''' 1. get word cases for languages
+        2. select standard case for lang to translate
+        3. compare given word cases from csv (1. line) with existing
+        word cases -> interrupt if not all cases in csv are found
+        4. read in lectures already in db
+        5. read in csv given by scheme from file.
+            needed fields in file:
+            word_to_translate
+            cases
+            irregular_in_cases
+            learned_in_cases
+            lecture
+            if lecture not in lectures:
+                create new lecture,
+                add lecture to list of available lectures
+        6. add word to db
+    '''
+    lang_from_id = fetch_language_id(lang_from, trans_order=False)
+    lang_to_id = fetch_language_id(lang_to, trans_order=False)
+
+    cases_from = fetch_word_cases_of_language(word_type_id, lang_from_id)
+    #reduce to standard case for lang_from (first in order)
+    case_from = cases_from[0]
+    cases_to = fetch_word_cases_of_language(word_type_id, lang_to_id)
+    cases_to_dict = {}
+    for element in cases_to:
+        cases_to_dict[element[0]] = element[1]
+    print case_from
+    print cases_to_dict
+    with open(input_file_name) as csvfile:
+        readin = csv.reader(csvfile, delimiter=csv_delimiter,
+                            quotechar=csv_quotechar)
+        voclist = []
+        for line in readin:
+            line_decoded = []
+            for element in line:
+                line_decoded.append(element.decode('utf-8'))
+            voclist.append(line_decoded)
+
+    word_cases_in_file = voclist[0][1:-3]
+    print voclist[0]
+    print word_cases_in_file
+    voclist.pop(0)
+
+    for line in voclist:
+        lecture = line[-1]
+        word_to_translate = {'name': line[0],
+                             'case': case_from[1],
+                             'learned': 1,
+                             'irregular': 0}
+        translations = []
+        for i in range(len(word_cases_in_file)):
+            translations.append({'name': line[i+1],
+                                 'case': cases_to_dict[word_cases_in_file[i]],
+                                 'learned': 0,
+                                 'irregular': 0})
+        add_group_to_db(lang_from, lang_to, lecture, word_to_translate, translations)
+
+
 # CSV-sites#############################################################
 @app.route('/list')
 def list():
@@ -307,6 +368,14 @@ def add_word_to_db():
     add_group_to_db(lang_from, lang_to, lecture,
                     word_to_translate, translations)
     g.db.commit()
+
+
+@app.route('/add/files')
+def add_files():
+    for i in range(len(database_csv)):
+        add_csv_to_db(database_csv[i], 'German', 'Swedish', i+1)
+    g.db.commit()
+    return render_template('add_file.html', database_csv=database_csv)
 
 
 @app.route('/import')

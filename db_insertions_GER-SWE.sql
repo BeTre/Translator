@@ -1,6 +1,9 @@
 INSERT INTO word_types (id, name) VALUES (1, 'verb');
 INSERT INTO word_types (id, name) VALUES (2, 'noun');
 INSERT INTO word_types (id, name) VALUES (3, 'adjective');
+INSERT INTO word_types (id, name) VALUES (6, 'numbers');
+INSERT INTO word_types (id, name) VALUES (5, 'countries');
+INSERT INTO word_types (id, name) VALUES (4, 'no_type');
 INSERT INTO languages (id, name, translation_order) VALUES (1, 'German', 10);
 INSERT INTO languages (id, name, translation_order) VALUES (2, 'Swedish', 20);
 INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (1, 'imperative', 1, 2, 50);
@@ -19,6 +22,14 @@ INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES 
 INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (14, 'infinitive', 1, 1, 10);
 INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (15, 'definite singular', 2, 1, 20);
 INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (16, 'singular', 3, 1, 10);
-INSERT INTO lectures (id, name) VALUES (1, 'A1, L1');
-INSERT INTO lectures (id, name) VALUES (2, 'A1, L2');
+INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (17, 'none', 4, 1, 10);
+INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (18, 'none', 5, 1, 10);
+INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (19, 'none', 6, 1, 10);
+INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (20, 'translation', 4, 2, 10);
+INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (21, 'indefinite singular', 5, 2, 10);
+INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (22, 'definite singular', 5, 2, 20);
+INSERT INTO word_cases (id, name, word_type_id, language_id, case_order) VALUES (23, 'translation', 6, 2, 10);
+INSERT INTO lectures (id, name) VALUES (1, 'A1L01');
+INSERT INTO lectures (id, name) VALUES (2, 'A1L02');
+INSERT INTO lectures (id, name) VALUES (3, 'A1L03');
 INSERT INTO groups (id) VALUES (1);
