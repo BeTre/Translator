@@ -47,8 +47,8 @@ CREATE TABLE translations (
 CREATE TABLE words (
   id                INTEGER PRIMARY KEY,
   name              TEXT NOT NULL,
-  irregular         INTEGER,          --BOOL (True = 0, False = 1)
-  learned           INTEGER,          --BOOL (True = 0, False = 1)
+  irregular         INTEGER,          --BOOL (True = 1, False = 0)
+  learned           INTEGER,          --BOOL (True = 1, False = 0)
   group_id          INTEGER NOT NULL,
   lecture_id        INTEGER NOT NULL,
   language_id       INTEGER NOT NULL,

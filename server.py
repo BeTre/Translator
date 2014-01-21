@@ -74,7 +74,7 @@ def fetch_word_cases_of_language(word_type_id, language_id):
     and
         wc.language_id = :language_id
     order by wc.case_order''',
-    {'word_type_id' : word_type_id, 'language_id': language_id})
+    {'word_type_id': word_type_id, 'language_id': language_id})
     data = [[row[0], row[1]] for row in cur]
     return data
 
@@ -93,11 +93,27 @@ def fetch_languages():
     return data
 
 
+def fetch_language_id(language, trans_order=True):
+    ((language_id, translation_order_id),) = g.db.execute('''
+    select id, translation_order
+    from languages where name = ?''', (language, ))
+    if trans_order:
+        return language_id, translation_order_id
+    else:
+        return language_id
+
+
 def fetch_lectures():
     """Read out all languages."""
     cur = g.db.execute('select name from lectures')
     data = [row[0] for row in cur]
     return data
+
+
+def fetch_lecture_id(lecture):
+    ((lecture_id,),) = g.db.execute('''
+    select id from lectures where name = ?''', (lecture, ))
+    return lecture_id
 
 
 def insert_word(
@@ -143,12 +159,9 @@ def add_group_to_db(
 
     lower_group_id, higher_group_id = insert_groups()
 
-    ((lang_from_id, translation_order_lang_from),) = g.db.execute('''
-    select id, translation_order from languages where name = ?''', (lang_from, ))
-    ((lang_to_id, translation_order_lang_to),) = g.db.execute('''
-    select id, translation_order from languages where name = ?''', (lang_to, ))
-    ((lecture_id,),) = g.db.execute('''
-    select id from lectures where name = ?''', (lecture, ))
+    lang_from_id, translation_order_lang_from = fetch_language_id(lang_from)
+    lang_to_id, translation_order_lang_to = fetch_language_id(lang_to)
+    lecture_id = fetch_lecture_id(lecture)
 
     if translation_order_lang_from < translation_order_lang_to:
         group_id_lang_from, group_id_lang_to = lower_group_id, higher_group_id
@@ -168,8 +181,6 @@ def add_group_to_db(
                         trans['name'], trans['case'],
                         trans.get('learned', False),
                         trans.get('irregular', False))
-    g.db.commit()
-    return 'word %s sucessfully added' % (word_to_translate['name'])
 
 
 def fetch_word_case_count():
@@ -293,11 +304,11 @@ def add_word_to_db():
                                  'learned': data.get('learned_'+key, 0),
                                  'irregular': data.get('ir_'+key, 0)})
 
-    return add_group_to_db(lang_from, lang_to, lecture,
-                           word_to_translate, translations)
+    add_group_to_db(lang_from, lang_to, lecture,
+                    word_to_translate, translations)
+    g.db.commit()
 
 
-# read_csv_to_db_part
 @app.route('/import')
 def imports():
     """list of vocabulary from csv file"""
